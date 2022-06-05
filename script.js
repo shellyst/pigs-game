@@ -11,7 +11,7 @@ const player1El = document.querySelector('.player--1');
 const score0El = document.querySelector('#score--0');
 const score1El = document.getElementById('score--1');
 const current0El = document.getElementById('current--0');
-const current1El = document.getElementById('current-1');
+const current1El = document.getElementById('current--1');
 
 // Hide dice - create hidden class.
 const diceEl = document.querySelector('.dice');
@@ -20,17 +20,35 @@ const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
-// Initial conditions.
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.classList.add('hidden');
+let scores, currentScore, activePlayer, playing;
 
-// Array of scores for each player.
-const scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-// If the game has not yet been won.
-let player = true;
+// Initializes a new game.
+const init = function () {
+  // Initial conditions.
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+
+  // Array of scores for each player.
+  scores = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  // If the game has not yet been won.
+  playing = true;
+
+  document
+    .querySelector(`.player--${activePlayer}`)
+    .classList.remove('player--winner');
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+  player0El.classList.add('player--active');
+  player1El.classList.remove('player--active');
+  current0El.textContent = 0;
+  current1El.textContent = 0;
+  diceEl.classList.add('hidden');
+};
+
+// Will run on page load.
+init();
 
 const switchPlayer = function () {
   // Reassigning activePlayer = if player is player 0 then will switch to player 1, else switch to player 0.
@@ -76,7 +94,7 @@ btnHold.addEventListener('click', function () {
     document.getElementById(`score--${activePlayer}`).textContent =
       scores[activePlayer];
     // Check score is  >= 100.
-    if (scores[activePlayer] >= 100) {
+    if (scores[activePlayer] >= 20) {
       //   Set playing to false.
       playing = false;
       //   Player wins - assign player winner class.
@@ -92,3 +110,6 @@ btnHold.addEventListener('click', function () {
     }
   }
 });
+
+// Init function passed as value into other function.
+btnNew.addEventListener('click', init);
